@@ -1,4 +1,5 @@
-/*import { NextFunction, Request, Response } from "express";
+import { unauthorizedError } from "../errors";
+import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status";
 import * as jwt from "jsonwebtoken";
 import { prisma } from "../configs";
@@ -21,7 +22,6 @@ export async function authenticateToken(req: AuthenticatedRequest, res: Response
     if (!session) return generateUnauthorizedResponse(res);
 
     req.userId = userId;
-    //TODO mudar aqui
     return next();
   } catch (err) {
     return generateUnauthorizedResponse(res);
@@ -37,4 +37,3 @@ export type AuthenticatedRequest = Request & JWTPayload;
 type JWTPayload = {
   userId: number;
 };
-*/

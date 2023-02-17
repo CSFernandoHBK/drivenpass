@@ -1,11 +1,13 @@
 import { Request, Response } from "express"
 import httpStatus from "http-status"
+import { AuthenticatedRequest } from "../middlewares/"
+ 
 
-
-export async function newCredential(req: Request, res: Response){
+export async function newCredential(req: AuthenticatedRequest, res: Response){
+    const {userId} = req;
 
     try{
-
+        return res.send("tudo ok")
     } catch(err){
         console.log(err)
         return res.status(500).send(httpStatus["500_MESSAGE"])
