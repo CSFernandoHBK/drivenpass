@@ -11,7 +11,7 @@ async function verifyEmail(email: string) {
 
 async function signUp(email: string, password: string){
     const request = await userRepository.signUp(email, password)
-    console.log(request)
+    delete request.password;
     return (request)
 }
 
