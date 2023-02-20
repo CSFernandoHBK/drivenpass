@@ -7,7 +7,7 @@ const credentialRouter = Router()
 credentialRouter
     .all("/*", authenticateToken)
     .post("/", newCredential)
-    .get("/", findCredential)
-    .delete("/", deleteCredential)
+    .get("/:id", findCredential)
+    .delete("/:id", deleteCredential)
 
 export {credentialRouter};
