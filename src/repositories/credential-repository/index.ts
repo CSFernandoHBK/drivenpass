@@ -1,7 +1,7 @@
 import { string } from "joi";
 import { prisma } from "../../configs";
 import { Credential } from "../../protocols";
-import { encrypt } from "../../tools";
+import { decrypt, encrypt } from "../../tools";
 
 async function newCredential(userId: number, credentialInfo: Credential){
     const {title, url, username, password} = credentialInfo;
@@ -27,7 +27,9 @@ async function findCredential(credentialId: number){
             id: credentialId
         }
     })
-    console.log(result)
+    const decryptedPass = decrypt(result.password);
+    result.password = decryptedPass;
+    
     return(result)
 }
 

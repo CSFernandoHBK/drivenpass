@@ -1,12 +1,14 @@
 import credentialRepository from "../../repositories/credential-repository";
 import { Credential } from "../../protocols";
-import { notFoundError } from "../../errors";
+import { conflictError, notFoundError } from "../../errors";
 
 async function newCredential(userId: number, credentialInfo: Credential){
-    //verificar se esse user já tem alguma com o mesmo titulo
-    const verifyCredential = await credentialRepository.findCredentialByTitle(credentialInfo.title) 
+    const verifyCredential = await credentialRepository.findCredentialByTitle(credentialInfo.title)
 
-    //se não tiver, insere no banco
+    if(verifyCredential && verifyCredential.userId===userId){
+        throw conflictError();
+    } 
+
     const result = await credentialRepository.newCredential(userId, credentialInfo)
     return result
 }

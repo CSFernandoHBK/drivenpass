@@ -21,6 +21,9 @@ export async function newCredential(req: AuthenticatedRequest, res: Response){
         return res.status(201).send(result)
     } catch(err){
         console.log(err)
+        if(err.name==="conflictError"){
+            return res.status(409).send(err.message)
+        }
         return res.status(500).send(httpStatus["500_MESSAGE"])
     }
 }
@@ -34,7 +37,7 @@ export async function findCredential(req: Request, res: Response){
 
     try{
         const result = await credentialService.findCredential(Number(credentialId))
-        return(result)
+        return res.send(result)
     } catch(err){
         console.log(err)
         if(err.name==="NotFoundError"){

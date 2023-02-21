@@ -13,3 +13,10 @@ export function notFoundError(): ApplicationError {
     message: "Content not found"
   }
 }
+
+export function conflictError(): ApplicationError {
+  return{
+    name: "conflictError",
+    message: "Title already exists"
+  }
+}
