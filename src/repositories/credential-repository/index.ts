@@ -36,6 +36,18 @@ async function findCredential(credentialId: number){
     return(result)
 }
 
+async function findAllCredential(userId: number) {
+    const result = await prisma.credential.findMany({
+        where:{
+            userId: userId
+        }
+    })
+
+    result.forEach((a) => {a.password = decrypt(a.password)})
+
+    return(result)
+}
+
 async function findCredentialByTitle(credentialTitle: string){
     const result = await prisma.credential.findFirst({
         where:{
@@ -58,7 +70,8 @@ const credentialRepository = {
     newCredential,
     findCredential,
     deleteCredential,
-    findCredentialByTitle
+    findCredentialByTitle,
+    findAllCredential
 }
 
 export default credentialRepository;

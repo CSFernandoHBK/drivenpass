@@ -51,6 +51,18 @@ export async function findCredential(req: AuthenticatedRequest, res: Response){
     }
 }
 
+export async function findAllCredential(req: AuthenticatedRequest, res: Response) {
+    const {userId} = req;
+
+    try{
+        const result = await credentialService.findAllCredential(userId)
+        return res.send(result)
+    } catch(err){
+        console.log(err)
+        return res.status(500).send(httpStatus["500_MESSAGE"])
+    }
+}
+
 export async function deleteCredential(req: AuthenticatedRequest, res: Response){
     const credentialId = req.params.id;
     const {userId} = req;

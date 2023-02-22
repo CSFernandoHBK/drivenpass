@@ -24,6 +24,11 @@ async function findCredential(credentialId: number, userId: number){
     return(result)
 }
 
+async function findAllCredential(userId: number){
+    const result = await credentialRepository.findAllCredential(userId)
+    return result
+}
+
 async function deleteCredential(credentialId: number, userId: number){
     const verifyCredential = await credentialRepository.findCredential(credentialId);
 
@@ -42,7 +47,8 @@ async function deleteCredential(credentialId: number, userId: number){
 const credentialService = {
     newCredential,
     findCredential,
-    deleteCredential
+    deleteCredential,
+    findAllCredential
 }
 
 export default credentialService;
