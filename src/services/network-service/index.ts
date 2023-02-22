@@ -23,7 +23,18 @@ async function findAllNetwork(userId: number){
 }
 
 async function deleteNetwork(networkId: number, userId: number){
+    const verifyNetwork = await networkRepository.findNetwork(networkId)
 
+    if(!verifyNetwork){
+        throw notFoundError();
+    }
+    if(verifyNetwork.userId !== userId){
+        throw forbiddenError();
+    }
+
+    const result = await networkRepository.deleteNetwork(networkId);
+
+    return result
 }
 
 const networkService = {

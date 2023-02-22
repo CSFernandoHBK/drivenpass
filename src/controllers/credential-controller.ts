@@ -74,7 +74,7 @@ export async function deleteCredential(req: AuthenticatedRequest, res: Response)
     try{
         const result = await credentialService.deleteCredential(Number(credentialId), userId)
         
-        return res.status(204)
+        return res.sendStatus(204)
     } catch(err){
         console.log(err)
         if(err.name==="NotFoundError"){
