@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { authenticateToken } from "middlewares";
+import { authenticateToken } from "../middlewares";
 import { deleteNetwork, findNetwork, newNetwork } from "../controllers/network-controller";
 
 const networkRouter = Router();
@@ -10,4 +10,4 @@ networkRouter
     .get("/:id", findNetwork)
     .delete("/:id", deleteNetwork)
 
-export default networkRouter;
+export {networkRouter};

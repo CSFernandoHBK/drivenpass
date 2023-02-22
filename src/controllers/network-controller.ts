@@ -1,7 +1,7 @@
 import { Request, Response } from "express"
 import httpStatus from "http-status"
-import { AuthenticatedRequest } from "middlewares"
-import { networkSchema } from "schemas";
+import { AuthenticatedRequest } from "../middlewares"
+import { networkSchema } from "../schemas";
 import { Network } from "../protocols";
 import networkService from "../services/network-service"
 
@@ -18,7 +18,7 @@ export async function newNetwork(req: AuthenticatedRequest, res: Response){
 
     try{
         const result = await networkService.newNetwork(userId, networkInfo)
-        return res.send(result)
+        return res.status(201).send(result)
     } catch(err){
         console.log(err)
         return res.status(500).send(httpStatus["500_MESSAGE"])

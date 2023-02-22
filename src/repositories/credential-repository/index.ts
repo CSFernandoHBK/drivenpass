@@ -43,7 +43,7 @@ async function findAllCredential(userId: number) {
         }
     })
 
-    result.forEach((a) => {a.password = decrypt(a.password)})
+    result.forEach((a) => {a.password = decrypt(a.password)})     
 
     return(result)
 }
