@@ -20,3 +20,10 @@ export function conflictError(): ApplicationError {
     message: "Title already exists"
   }
 }
+
+export function forbiddenError(): ApplicationError {
+  return{
+    name: "forbiddenError",
+    message: "Acess denied"
+  }
+}
