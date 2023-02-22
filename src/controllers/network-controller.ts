@@ -29,9 +29,30 @@ export async function findNetwork(req: AuthenticatedRequest, res: Response){
     const networkId = req.params.id;
     const {userId} = req;
     
+    if(!networkId){
+        return res.status(400).send("id not sended!")
+    }
 
     try{
         const result = await networkService.findNetwork(Number(networkId), userId)
+        return res.send(result)
+    } catch(err){
+        console.log(err)
+        if(err.name==="NotFoundError"){
+            return res.status(404).send(err.message)
+        }
+        if(err.name==="forbiddenError"){
+            return res.status(403).send(err.message)
+        }
+        return res.status(500).send(httpStatus["500_MESSAGE"])
+    }
+}
+
+export async function findAllNetwork(req: AuthenticatedRequest, res: Response) {
+    const {userId} = req;
+
+    try{
+        const result = await networkService.findAllNetwork(userId)
         return res.send(result)
     } catch(err){
         console.log(err)

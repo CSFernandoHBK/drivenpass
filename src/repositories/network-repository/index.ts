@@ -34,6 +34,18 @@ async function findNetwork(networkId: number){
     return(result)
 }
 
+async function findAllNetwork(userId: number) {
+    const result = await prisma.network.findMany({
+        where:{
+            userId: userId
+        }
+    })
+
+    result.forEach((a) => {a.password = decrypt(a.password)})     
+
+    return(result)
+}
+
 async function deleteNetwork(networkId: number){
     const result = await prisma.network.delete({
         where:{
@@ -46,6 +58,7 @@ async function deleteNetwork(networkId: number){
 const networkRepository = {
     newNetwork,
     findNetwork,
+    findAllNetwork,
     deleteNetwork
 }
 

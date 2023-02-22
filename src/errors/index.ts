@@ -30,6 +30,6 @@ export function conflictError(): ApplicationError {
 export function forbiddenError(): ApplicationError {
   return{
     name: "forbiddenError",
-    message: "Acess denied"
+    message: "Access denied"
   }
 }

@@ -25,8 +25,7 @@ async function findCredential(credentialId: number, userId: number){
 }
 
 async function findAllCredential(userId: number){
-    const result = await credentialRepository.findAllCredential(userId)
-    return result
+    return await credentialRepository.findAllCredential(userId)
 }
 
 async function deleteCredential(credentialId: number, userId: number){
