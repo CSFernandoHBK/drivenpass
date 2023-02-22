@@ -1,12 +1,23 @@
 import { Request, Response } from "express"
 import httpStatus from "http-status"
+import { AuthenticatedRequest } from "middlewares"
+import { networkSchema } from "schemas";
+import { Network } from "../protocols";
 import networkService from "../services/network-service"
 
 
-export async function newNetwork(req: Request, res: Response){
+export async function newNetwork(req: AuthenticatedRequest, res: Response){
+    const {userId} = req;
+    const networkInfo: Network = req.body;
+
+    const validation = networkSchema.validate(networkInfo, {abortEarly: true})
+
+    if(validation.error){
+        return res.status(422).send(validation.error.details[0].message)
+    }
 
     try{
-        const result = await networkService.newNetwork()
+        const result = await networkService.newNetwork(userId, networkInfo)
         return res.send(result)
     } catch(err){
         console.log(err)
@@ -14,10 +25,13 @@ export async function newNetwork(req: Request, res: Response){
     }
 }
 
-export async function findNetwork(req: Request, res: Response){
+export async function findNetwork(req: AuthenticatedRequest, res: Response){
+    const networkId = req.params.id;
+    const {userId} = req;
+    
 
     try{
-        const result = await networkService.findNetwork()
+        const result = await networkService.findNetwork(Number(networkId), userId)
         return res.send(result)
     } catch(err){
         console.log(err)
@@ -25,10 +39,12 @@ export async function findNetwork(req: Request, res: Response){
     }
 }
 
-export async function deleteNetwork(req: Request, res: Response){
+export async function deleteNetwork(req: AuthenticatedRequest, res: Response){
+    const networkId = req.params.id;
+    const {userId} = req;
 
     try{
-        const result = await networkService.deleteNetwork()
+        const result = await networkService.deleteNetwork(Number(networkId), userId)
         return res.send(result)
     } catch(err){
         console.log(err)

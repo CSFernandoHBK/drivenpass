@@ -9,3 +9,9 @@ export type Credential = {
     username: string;
     password: string;
 }
+
+export type Network = {
+    title: string,
+    network: string,
+    password: string
+}

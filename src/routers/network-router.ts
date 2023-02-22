@@ -1,11 +1,13 @@
 import { Router } from "express";
+import { authenticateToken } from "middlewares";
 import { deleteNetwork, findNetwork, newNetwork } from "../controllers/network-controller";
 
 const networkRouter = Router();
 
 networkRouter
+    .all("/*", authenticateToken)
     .post("/", newNetwork)
-    .get("/", findNetwork)
-    .delete("/", deleteNetwork)
+    .get("/:id", findNetwork)
+    .delete("/:id", deleteNetwork)
 
 export default networkRouter;

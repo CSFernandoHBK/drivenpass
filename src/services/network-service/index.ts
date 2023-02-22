@@ -1,13 +1,15 @@
+import networkRepository from "repositories/network-repository";
+import { Network } from "../../protocols";
 
-async function newNetwork(){
+async function newNetwork(userId: number, networkInfo: Network){
+    const result = await networkRepository.newNetwork(userId, networkInfo)
+}
+
+async function findNetwork(networkId: number, userId: number){
 
 }
 
-async function findNetwork(){
-
-}
-
-async function deleteNetwork(){
+async function deleteNetwork(networkId: number, userId: number){
 
 }
 
