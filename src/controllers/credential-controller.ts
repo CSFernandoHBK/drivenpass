@@ -51,12 +51,26 @@ export async function findCredential(req: AuthenticatedRequest, res: Response){
     }
 }
 
-export async function deleteCredential(req: Request, res: Response){
+export async function deleteCredential(req: AuthenticatedRequest, res: Response){
+    const credentialId = req.params.id;
+    const {userId} = req;
+
+    if(!credentialId){
+        return res.status(400).send("id not sended!")
+    }
 
     try{
-
+        const result = await credentialService.deleteCredential(Number(credentialId), userId)
+        
+        return res.status(204)
     } catch(err){
         console.log(err)
+        if(err.name==="NotFoundError"){
+            return res.status(404).send(err.message)
+        }
+        if(err.name==="forbiddenError"){
+            return res.status(403).send(err.message)
+        }
         return res.status(500).send(httpStatus["500_MESSAGE"])
     }
 }

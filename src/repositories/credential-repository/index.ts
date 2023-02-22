@@ -27,9 +27,12 @@ async function findCredential(credentialId: number){
             id: credentialId
         }
     })
-    const decryptedPass = decrypt(result.password);
-    result.password = decryptedPass;
     
+    if(result){
+        const decryptedPass = decrypt(result.password);
+        result.password = decryptedPass;    
+    }
+
     return(result)
 }
 
@@ -42,8 +45,13 @@ async function findCredentialByTitle(credentialTitle: string){
     return result
 }
 
-async function deleteCredential(){
-
+async function deleteCredential(credentialId: number){
+    const result = await prisma.credential.delete({
+        where:{
+            id: credentialId
+        }
+    })
+    return result
 }
 
 const credentialRepository = {

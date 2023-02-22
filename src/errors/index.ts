@@ -1,5 +1,11 @@
 import { ApplicationError } from "protocols";
 
+
+
+export function errorTreatment(){
+
+}
+
 export function unauthorizedError(): ApplicationError {
     return {
       name: "UnauthorizedError",

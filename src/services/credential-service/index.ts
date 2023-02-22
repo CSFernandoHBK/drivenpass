@@ -5,8 +5,6 @@ import { conflictError, notFoundError, forbiddenError } from "../../errors";
 async function newCredential(userId: number, credentialInfo: Credential){
     const verifyCredential = await credentialRepository.findCredentialByTitle(credentialInfo.title)
 
-    console.log(verifyCredential)
-
     if(verifyCredential && verifyCredential.userId===userId){
         throw conflictError();
     } 
@@ -26,8 +24,19 @@ async function findCredential(credentialId: number, userId: number){
     return(result)
 }
 
-async function deleteCredential(){
+async function deleteCredential(credentialId: number, userId: number){
+    const verifyCredential = await credentialRepository.findCredential(credentialId);
 
+    if(!verifyCredential){
+        throw notFoundError();
+    }
+    if(verifyCredential.userId !== userId){
+        throw forbiddenError();
+    }
+
+    const result = await credentialRepository.deleteCredential(credentialId);
+
+    return result
 }
 
 const credentialService = {
