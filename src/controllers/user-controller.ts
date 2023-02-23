@@ -10,7 +10,7 @@ export async function signUp(req: Request, res: Response){
     const validation = userSchema.validate(user, {abortEarly: true})
 
     if(validation.error){
-        return res.status(422).send(validation.error.details[0].message)
+        return res.status(400).send(validation.error.details[0].message)
     }
 
     try{
