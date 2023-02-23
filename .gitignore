@@ -1,2 +1,7 @@
+dist
 node_modules
-.env
+coverage
+.env*
+!.env.example
+yarn.lock
+.vscode
