@@ -32,10 +32,6 @@ export async function findCredential(req: AuthenticatedRequest, res: Response){
     const credentialId = req.params.id;
     const {userId} = req;
 
-    if(!credentialId){
-        return res.status(400).send("id not sended!")
-    }
-
     try{
         const result = await credentialService.findCredential(Number(credentialId), userId)
         return res.send(result)
@@ -66,10 +62,6 @@ export async function findAllCredential(req: AuthenticatedRequest, res: Response
 export async function deleteCredential(req: AuthenticatedRequest, res: Response){
     const credentialId = req.params.id;
     const {userId} = req;
-
-    if(!credentialId){
-        return res.status(400).send("id not sended!")
-    }
 
     try{
         const result = await credentialService.deleteCredential(Number(credentialId), userId)

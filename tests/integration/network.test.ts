@@ -24,3 +24,7 @@ describe("POST /credential", () => {
         }); 
     })
 })
+
+describe("GET /network/:id", () => {
+    
+})

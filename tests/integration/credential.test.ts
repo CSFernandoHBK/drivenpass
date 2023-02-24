@@ -82,78 +82,160 @@ describe("POST /credential", () => {
 
 describe("GET /credential/:id", () => {
     it("should respond with 401 if no token is given", async () => {
-        const response = await server.post("/credential");
+        const response = await server.get("/credential");
         expect(response.status).toBe(401)
     });
 
     it("should respond with status 401 if given token is not valid", async () => {
         const token = faker.lorem.word();
-        const response = await server.post("/credential").set("Authorization", `Bearer ${token}`)
+        const response = await server.get("/credential").set("Authorization", `Bearer ${token}`)
         expect(response.status).toBe(401)
     });
 
     it("should respond with status 401 if there is no session for given token", async () => {
         const userWithoutSession = await createUser();
         const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
-        const response = await server.post("/credential").set("Authorization", `Bearer ${token}`)
+        const response = await server.get("/credential").set("Authorization", `Bearer ${token}`)
         expect(response.status).toBe(401)
     });
 
     describe("when token is valid", () => {
-        it("should respond with 400 if no id is send", async () => {
-
-        })
-
         it("should respond with 404 if id not exist", async () => {
-
+            const user = await createUser();
+            const token = await generateValidToken(user);
+            const response = await server.get(`/credential/0`).set("Authorization", `Bearer ${token}`)
+            expect(response.status).toBe(404)
         })
 
         it("should respond with 403 if credential does not belong to user", async () => {
+            const userOwner = await createUser();
+            await generateValidToken(userOwner);
+            const body = generateCredentialBody();
+            const credential = await createCredential(body, userOwner.id)
+            const user = await createUser();
+            const token = await generateValidToken(user);
 
+            const response = await server.get(`/credential/${credential.id}`).set("Authorization", `Bearer ${token}`)
+            expect(response.status).toBe(403)
         })
 
         it("should respond with 200 and credential body", async () => {
+            const user = await createUser();
+            const token = await generateValidToken(user);
+            const body = generateCredentialBody();
+            const credential = await createCredential(body, user.id)
 
+            const response = await server.get(`/credential/${credential.id}`).set("Authorization", `Bearer ${token}`)
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual(
+                expect.objectContaining({
+                    id: expect.any(Number),
+                    title: expect.any(String),
+                    url: expect.any(String),
+                    username: expect.any(String),
+                    password: expect.any(String),
+                    userId: expect.any(Number)
+                })
+            )   
         })
     })
 })
 
 describe("GET /credential", () => {
     it("should respond with 401 if no token is given", async () => {
-        const response = await server.post("/credential");
+        const response = await server.get("/credential");
         expect(response.status).toBe(401)
     });
 
     it("should respond with status 401 if given token is not valid", async () => {
         const token = faker.lorem.word();
-        const response = await server.post("/credential").set("Authorization", `Bearer ${token}`)
+        const response = await server.get("/credential").set("Authorization", `Bearer ${token}`)
         expect(response.status).toBe(401)
     });
 
     it("should respond with status 401 if there is no session for given token", async () => {
         const userWithoutSession = await createUser();
         const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
-        const response = await server.post("/credential").set("Authorization", `Bearer ${token}`)
+        const response = await server.get("/credential").set("Authorization", `Bearer ${token}`)
         expect(response.status).toBe(401)
     });
+
+    describe("when token is valid", () => {
+        it("should respond with 200 and credentials array", async () => {
+            const user = await createUser();
+            const token = await generateValidToken(user);
+            const body = generateCredentialBody();
+            const body2 = generateCredentialBody();
+            await createCredential(body, user.id)
+            await createCredential(body2, user.id)
+
+            const response = await server.get("/credential").set("Authorization", `Bearer ${token}`)
+
+            expect(response.status).toBe(200)
+            expect(response.body).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({
+                        id: expect.any(Number),
+                        title: expect.any(String),
+                        url: expect.any(String),
+                        username: expect.any(String),
+                        password: expect.any(String),
+                        userId: expect.any(Number)
+                    })
+                ])
+            )
+        }) 
+    })
 })
 
 describe("DELETE /credential/:id", () => {
     it("should respond with 401 if no token is given", async () => {
-        const response = await server.post("/credential");
+        const response = await server.delete("/credential");
         expect(response.status).toBe(401)
     });
 
     it("should respond with status 401 if given token is not valid", async () => {
         const token = faker.lorem.word();
-        const response = await server.post("/credential").set("Authorization", `Bearer ${token}`)
+        const response = await server.delete("/credential").set("Authorization", `Bearer ${token}`)
         expect(response.status).toBe(401)
     });
 
     it("should respond with status 401 if there is no session for given token", async () => {
         const userWithoutSession = await createUser();
         const token = jwt.sign({ userId: userWithoutSession.id }, process.env.JWT_SECRET);
-        const response = await server.post("/credential").set("Authorization", `Bearer ${token}`)
+        const response = await server.delete("/credential").set("Authorization", `Bearer ${token}`)
         expect(response.status).toBe(401)
     });
+
+    describe("when token is valid", () => {
+        it("should respond with 404 if id not exist", async () => {
+            const user = await createUser();
+            const token = await generateValidToken(user);
+            const response = await server.delete(`/credential/0`).set("Authorization", `Bearer ${token}`)
+            expect(response.status).toBe(404)
+        })
+
+        it("should respond with 403 if credential does not belong to user", async () => {
+            const userOwner = await createUser();
+            await generateValidToken(userOwner);
+            const body = generateCredentialBody();
+            const credential = await createCredential(body, userOwner.id)
+            const user = await createUser();
+            const token = await generateValidToken(user);
+
+            const response = await server.delete(`/credential/${credential.id}`).set("Authorization", `Bearer ${token}`)
+            expect(response.status).toBe(403)
+        })
+
+        it("should respond with 204", async () => {
+            const user = await createUser();
+            const token = await generateValidToken(user);
+            const body = generateCredentialBody();
+            const credential = await createCredential(body, user.id)
+
+            const response = await server.delete(`/credential/${credential.id}`).set("Authorization", `Bearer ${token}`)
+            expect(response.status).toBe(204)
+        })
+    })
+
 })
