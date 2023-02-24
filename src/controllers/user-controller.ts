@@ -36,18 +36,18 @@ export async function signIn(req: Request, res: Response) {
     const validation = userSchema.validate(user, {abortEarly: true})
 
     if(validation.error){
-        return res.status(422).send(validation.error.details[0].message)
+        return res.status(400).send(validation.error.details[0].message)
     }
 
     try{
         const {email, password} = user;
         const emailExists = await userService.verifyEmail(email)
         if(!emailExists){
-            return res.status(404).send("E-mail not found!")
+            return res.status(401).send("E-mail not found!")
         }
         const token = await userService.signIn(email, password)
 
-        return res.send(token)
+        return res.send({token: token})
     } catch(err){
         if(err.name==="InvalidCredentialsError"){
             return res.status(401).send(err.message)

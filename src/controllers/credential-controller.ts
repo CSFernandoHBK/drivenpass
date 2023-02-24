@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Response } from "express"
 import httpStatus from "http-status"
 import credentialService from "../services/credential-service";
 import { AuthenticatedRequest } from "../middlewares/"
