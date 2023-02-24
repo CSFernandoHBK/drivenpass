@@ -50,7 +50,7 @@ describe("POST /user/sign-up", () => {
 })
 
 describe("POST /user/sign-in", () => {
-    it("shoud respond with 400 if body is not sended", async () => {
+    it("should respond with 400 if body is not sended", async () => {
         const response = await server.post("/user/sign-in").send()
         expect(response.status).toBe(400);
     });

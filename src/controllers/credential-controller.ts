@@ -13,7 +13,7 @@ export async function newCredential(req: AuthenticatedRequest, res: Response){
     const validation = credentialSchema.validate(credentialInfo, {abortEarly: true})
 
     if(validation.error){
-        return res.status(422).send(validation.error.details[0].message)
+        return res.status(400).send(validation.error.details[0].message)
     }
 
     try{

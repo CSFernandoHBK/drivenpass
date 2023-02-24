@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "npx dotenv -e .env.test npx jest",
+    "test": "npx dotenv -e .env.test npx jest --runInBand",
     "dev": "npx dotenv -e .env.development nodemon --delay 1000ms src/server.ts -e ts"
   },
   "keywords": [],

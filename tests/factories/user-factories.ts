@@ -18,7 +18,7 @@ export async function createUser() {
     return user
 }
 
-export async function createValidSession(token: string, userId: number){
+async function createValidSession(token: string, userId: number){
     await prisma.session.create({
         data:{
             userId: userId,
