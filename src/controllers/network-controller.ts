@@ -28,10 +28,6 @@ export async function newNetwork(req: AuthenticatedRequest, res: Response){
 export async function findNetwork(req: AuthenticatedRequest, res: Response){
     const networkId = req.params.id;
     const {userId} = req;
-    
-    if(!networkId){
-        return res.status(400).send("id not sended!")
-    }
 
     try{
         const result = await networkService.findNetwork(Number(networkId), userId)

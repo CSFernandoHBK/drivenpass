@@ -8,8 +8,11 @@ import { createNetwork, generateNetworkBody } from "../factories/network-factori
 
 const server = supertest(app)
 
-describe("POST /network", () => {
+beforeEach(async () => {
+    await cleanDb();
+});
 
+describe("POST /network", () => {
     it("should respond with 401 if no token is given", async () => {
         const response = await server.post("/network");
         expect(response.status).toBe(401)

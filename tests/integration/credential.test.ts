@@ -116,6 +116,7 @@ describe("GET /credential/:id", () => {
             const token = await generateValidToken(user);
 
             const response = await server.get(`/credential/${credential.id}`).set("Authorization", `Bearer ${token}`)
+            console.log(`o status daqui foi ${response.status}`)
             expect(response.status).toBe(403)
         })
 
