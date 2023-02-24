@@ -5,4 +5,5 @@ export async function cleanDb() {
     await prisma.network.deleteMany({})
     await prisma.session.deleteMany({})
     await prisma.user.deleteMany({})
+
 }

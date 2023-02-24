@@ -1,4 +1,4 @@
-import { Request, Response } from "express"
+import { Response } from "express"
 import httpStatus from "http-status"
 import { AuthenticatedRequest } from "../middlewares"
 import { networkSchema } from "../schemas";
@@ -13,7 +13,7 @@ export async function newNetwork(req: AuthenticatedRequest, res: Response){
     const validation = networkSchema.validate(networkInfo, {abortEarly: true})
 
     if(validation.error){
-        return res.status(422).send(validation.error.details[0].message)
+        return res.status(400).send(validation.error.details[0].message)
     }
 
     try{

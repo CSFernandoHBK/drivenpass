@@ -3,8 +3,7 @@ import { Network } from "../../protocols";
 import { forbiddenError, notFoundError } from "../../errors";
 
 async function newNetwork(userId: number, networkInfo: Network){
-    const result = await networkRepository.newNetwork(userId, networkInfo)
-    return result
+    return await networkRepository.newNetwork(userId, networkInfo)
 }
 
 async function findNetwork(networkId: number, userId: number){
