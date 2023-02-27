@@ -1,0 +1,1 @@
+SafePass é um sistema de gerenciamento de senhas, voltado para contas web e redes wifi. Este repositório se refere apenas ao backend da aplicação.
